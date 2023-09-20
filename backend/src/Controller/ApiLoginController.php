@@ -9,16 +9,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class ApiLoginController extends AbstractController
 {
     /**
      * @Route("/api/login", name="api_login", methods={"POST"})
      */
-    public function login(#[CurrentUser] ?User $user, UserRepository $userRepository, SerializerInterface $serializer, Request $request): JsonResponse | Response
+    public function login(#[CurrentUser] ?User $user, JWTTokenManagerInterface $jwtManager, UserRepository $userRepository, SerializerInterface $serializer, Request $request): JsonResponse | Response
     {
         /* Récupérer les données de la requête */
         $data = $request->getContent();
@@ -33,8 +34,17 @@ class ApiLoginController extends AbstractController
         $user = $userRepository->findOneBy(['Email' => $email]);
 
         if ($user) {
+            $payload = [
+                'firstname' => $user->getFirstName(),
+                'lastname' => $user->getLastName(),
+                'address' => $user->getAddress(),
+                'cp' => $user->getCP(),
+                'town' => $user->getTown(),
+                'country' => $user->getCountry(),
+        ];
+
             /* Générer un jeton d'authentification fictif */
-            $token = '4545dfhjkghsk';
+            $token = $jwtManager->createFromPayload($user, $payload);
 
             /* Retourner les données de l'utilisateur et le jeton en JSON */
             return $this->json([
