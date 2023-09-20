@@ -8,3 +8,13 @@ product_list:
     path: /api/products
     controller: App\Controller\ProductController::list
     methods: GET
+
+login:
+    path: /api/login
+    controller: App\Controller\LoginController::login
+    methods: POST
+
+register:
+    path: /api/register
+    controller: App\Controller\RegistrationController::register
+    methods: POST
