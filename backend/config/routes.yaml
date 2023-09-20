@@ -11,7 +11,7 @@ product_list:
 
 login:
     path: /api/login
-    controller: App\Controller\LoginController::login
+    controller: App\Controller\ApiLoginController::login
     methods: POST
 
 register:
