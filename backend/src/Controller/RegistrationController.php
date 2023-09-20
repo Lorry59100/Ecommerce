@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -29,7 +30,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/api/register", name="register", methods={"POST"})
      */
-    public function register(UserRepository $userRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager, Request $request): JsonResponse | Response
+    public function register(UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, SerializerInterface $serializer, EntityManagerInterface $entityManager, Request $request): JsonResponse | Response
     { 
         /* Déclarer les encoders */
         $encoders = [new XmlEncoder(), new JsonEncoder()];
@@ -39,7 +40,20 @@ class RegistrationController extends AbstractController
         /* Récupérer les données de la requête */
         $data = $request->getContent();
         $user = $serializer->deserialize($data, User::class, 'json');
-        if(isset($user)) {
+        if($user) {
+            /* Vérifier si l'User existe dèja en BDD */
+            $email = $user->getEmail();
+            $userInDB = $userRepository->findOneBy(['Email' => $email]);
+            if($userInDB) {
+                return new Response('Cette adresse mail est déjà prise', 201);
+            }
+
+            /* Hasher le mdp */
+            $plainPassword = $user->getPassword();
+            $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+            $user->setPassword($hashedPassword);
+
+            /* Inscrire en BDD */
             $entityManager->persist($user);
             $entityManager->flush();
             return new Response('Success', 201);
