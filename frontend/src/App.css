@@ -40,3 +40,30 @@
 .error {
   color: red;
 }
+
+/* NAVBAR */
+.navbar {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.navbar a:last-child {
+  margin-right: 0;
+}
+
+/* Styles spécifiques pour les liens de droite (connexion et inscription) */
+.navbar .right-links {
+  margin-left: auto;
+}
+
+.container {
+  display: flex;
+}
+
