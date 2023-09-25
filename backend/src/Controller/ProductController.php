@@ -40,4 +40,30 @@ class ProductController extends AbstractController
 
         return new JsonResponse($formattedProducts);
     }
+
+     /**
+     * @Route("/api/single_product/{id}", name="single_product", methods={"GET"})
+     */
+    public function show(ProductsRepository $productRepository, $id): JsonResponse
+    {
+        // Utilisez $id pour récupérer le produit correspondant dans la base de données
+        $product = $productRepository->find($id);
+
+        if (!$product) {
+            // Gérez le cas où le produit n'est pas trouvé (par exemple, renvoyez une erreur 404)
+            throw $this->createNotFoundException('Le produit n\'existe pas');
+        }
+        
+        // Formatez les données du produit
+        $formattedProduct = [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'price' => $product->getPrice(),
+            'stock' => $product->getStock(),
+            'description' => $product->getDescription(),
+            // ... autres propriétés
+        ];
+
+        return new JsonResponse($formattedProduct);
+    }
 }
