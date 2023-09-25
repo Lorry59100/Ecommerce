@@ -5,7 +5,7 @@ import FormikControl from '../FormikControl';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-function LoginForm() {
+function LoginForm(props) {
   const initialValues = {
     email: '',
     password: ''
@@ -40,6 +40,7 @@ function LoginForm() {
 
         // Mettre à jour l'état de connexion de l'utilisateur
         setIsUserLoggedIn(true);
+        props.handleLoginSuccess(decodedToken.firstname);
 
       })
       .catch((error) => {
