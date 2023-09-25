@@ -9,6 +9,11 @@ product_list:
     controller: App\Controller\ProductController::list
     methods: GET
 
+single_product:
+    path: /api/single_product/{id}
+    controller: App\Controller\ProductController::show
+    methods: GET
+
 login:
     path: /api/login
     controller: App\Controller\ApiLoginController::login
@@ -18,3 +23,33 @@ register:
     path: /api/register
     controller: App\Controller\RegistrationController::register
     methods: POST
+
+show_cart:
+    path: /api/cart/{id}
+    controller: App\Controller\CartController::showCart
+    methods: GET
+
+add_cart:
+    path: /api/addcart/{idUser}/{idProduct}/{quantity}
+    controller: App\Controller\CartController::addToCart
+    methods: POST
+
+order:
+    path: /api/order/{idUser}
+    controller: App\Controller\CartController::order
+    methods: [GET, POST]
+
+confirm:
+    path: /api/confirm/{idUser}/{date}
+    controller: App\Controller\CartController::confirm
+    methods: [GET, POST]
+
+shipping:
+    path: /api/shipping/{idUser}
+    controller: App\Controller\CartController::isShipping
+    methods: GET
+
+delivered:
+    path: /api/delivered/{idUser}
+    controller: App\Controller\CartController::delivered
+    methods: GET
