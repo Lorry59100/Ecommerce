@@ -41,6 +41,7 @@ class ApiLoginController extends AbstractController
                 'cp' => $user->getCP(),
                 'town' => $user->getTown(),
                 'country' => $user->getCountry(),
+                'id' => $user->getId(),
         ];
 
             /* Générer un jeton d'authentification fictif */
