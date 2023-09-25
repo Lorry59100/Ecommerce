@@ -68,19 +68,27 @@ function ProductList() {
   return (
     <div>
       <h1>Liste des produits</h1>
-      <ul>
+      <div className="product-cards">
         {products.map(product => (
-          <li key={product.id}>
-            <Link to={`/single_product/${product.id}`}>
-              {product.name} - {product.price} €
-            </Link>
-            <button onClick={() => decrementQuantity(product)}>-</button>
+          <div key={product.id} className="product-card">
+            <div className="title_card">
+              <h2>{product.name}</h2>
+            <Link to={`/single_product/${product.id}`}><button>Détails</button></Link>
+            </div>
+              <img src={product.img} alt={product.name} />
+              <p>Prix : {product.price} €</p>
+              <div className="card-buttons">
+                <div className="increment-buttons">
+              <button onClick={() => decrementQuantity(product)}>-</button>
               <span>{product.quantity}</span> 
-            <button onClick={() => incrementQuantity(product)}>+</button>
-            <button onClick={() => addToCart(product)}>Ajouter au panier</button>
-          </li>
+              <button onClick={() => incrementQuantity(product)}>+</button>
+                </div>
+              <button onClick={() => addToCart(product)}>Ajouter au panier</button>
+              </div>
+            
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
