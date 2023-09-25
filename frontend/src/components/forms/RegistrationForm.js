@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import FormikControl from '../FormikControl'
 import axios from 'axios';
+import { ValidationRegister } from './ValidationRegister';
 
-export function RegistrationForm() {
+export function RegistrationForm(props) {
+  const [isUserRegistered, setIsUserRegistered] = useState(false);
 
     const initialValues = {
         firstname: '',
@@ -17,18 +19,7 @@ export function RegistrationForm() {
         password: '',
         confirmPassword: '',
     }
-    const validationSchema = Yup.object({
-        firstname: Yup.string().required('Requis'),
-        lastname: Yup.string().required('Requis'),
-        address: Yup.string().required('Requis'),
-        cp: Yup.string().required('Requis'),
-        town: Yup.string().required('Requis'),
-        country: Yup.string().required('Requis'),
-        email: Yup.string().email('Format email invalide').required('Requis'),
-        password: Yup.string().required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password'), ''], 'Les mots de passe ne correspondent pas').required('Requis'),
-    })
-
+ 
     const onSubmit = (values) => {
         console.log('Values', values);
         axios
@@ -45,13 +36,15 @@ export function RegistrationForm() {
           .then((response) => {
             console.log('Response data', response.data);
             // Handle the response data as needed
+            setIsUserRegistered(true);
+            props.handleRegistrationSuccess();
           })
           .catch((error) => {
             console.error('Erreur lors de la récupération des données :', error);
           });
       };
 
-    return <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}> 
+    return <Formik initialValues={initialValues} validationSchema={ValidationRegister} onSubmit={onSubmit}> 
         {
             formik => {
                 return <Form>
