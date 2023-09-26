@@ -102,6 +102,16 @@ $idUser, $idProduct, $quantity): JsonResponse | Response {
             // Mettre à jour cette quantité et persister les donées
             $cart->setQuantity($existingQuantity + $quantity);
             $entityManager->flush();
+
+        // Décrémenter la quantité en stock du produit
+        $productStock = $product->getStock();
+        if ($productStock >= $quantity) {
+            $product->setStock($productStock - $quantity);
+            $entityManager->flush();
+        } else {
+            // Gérez le cas où la quantité en stock est insuffisante
+            // Vous pouvez générer une erreur ou prendre d'autres mesures appropriées ici
+        }
             $productExistsInCart = true;
             return new Response('Panier mis à jour', 201);
         }
