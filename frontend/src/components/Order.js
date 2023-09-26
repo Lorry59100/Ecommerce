@@ -20,20 +20,45 @@ export function Order(props) {
       });
   }, [userId]);
 
+  // Fonction pour calculer le prix total
+  const calculateTotalPrice = () => {
+    return orderData.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0);
+  };
+  
+
   return (
-    <div>
+    <div className="table-container">
       <h1>Détails de la commande</h1>
-      <ul>
-        {orderData.map((product, index) => (
-          <li key={index}>
-            <strong>Catégorie:</strong> {product.category}<br />
-            <strong>Nom:</strong> {product.name}<br />
-            <strong>Prix:</strong> {product.price} €<br />
-            <strong>Quantité:</strong> {product.quantity}<br />
-            <strong>Description:</strong> {product.description}<br />
-          </li>
-        ))}
-      </ul>
+      <table className="table product-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Catégorie</th>
+            <th>Description</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orderData.map((product, index) => (
+            <tr key={index}>
+              <td>{product.name}</td>
+              <td>{product.category}</td>
+              <td>{product.description}</td>
+              <td>{product.quantity}</td>
+              <td>{product.price * product.quantity} €</td>
+            </tr>
+          ))}
+          <tr>
+            <td colSpan="4"></td>
+            <td className="total-price">
+              <strong>Prix Total:</strong> {calculateTotalPrice()} €
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <OrderForm />
     </div>
   );
