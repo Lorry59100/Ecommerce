@@ -48,14 +48,18 @@ public function showCart(UserRepository $userRepository, CartRepository $cartRep
 
         // Accédez aux informations du produit
         $productName = $product->getName();
+        $img = $product->getImg();
         $quantity = $cart->getQuantity();
         $price = $product->getPrice();
         $description = $product->getDescription(); 
         $category = $product->getCategory();
+        $id = $product->getId();
 
         // Stockez les informations dans le tableau associatif
         $productInfo[] = [
             'name' => $productName,
+            'img' => $img,
+            'id' => $id,
             'quantity' => $quantity,
             'price' => $price,
             'description' => $description,
@@ -178,7 +182,6 @@ public function confirm(UserRepository $userRepository, CartRepository $cartRepo
     // Récupérer les produits
     $carts = $cartRepository->findBy(['Owner' => $user, 'status' => null]);
     $cartInfo = [];
-    /* dd($carts); */
     foreach($carts as $cart) {
         $productStatus = $cart->setStatus(1);
         $numberOrder = $cart->setOrdernumber($orderNumber);
@@ -200,6 +203,26 @@ public function confirm(UserRepository $userRepository, CartRepository $cartRepo
 
     // Répondre avec un message de confirmation
     return new JsonResponse($cartInfo);
+}
+
+/**
+ * @Route("/api/remove/{idUser}/{idProduct}", name="remove", methods={"POST"})
+ */
+public function removeOrder(UserRepository $userRepository, CartRepository $cartRepository, EntityManagerInterface $entityManager, $idUser, $idProduct): JsonResponse
+{
+    // Récupérer l'utilisateur
+    $user = $userRepository->find($idUser);
+    if (!$user) {
+        throw $this->createNotFoundException('Utilisateur inconnu');
+    }
+
+    // Récupérer les produits
+    $cart = $cartRepository->findOneBy(['Owner' => $user, 'status' => null, 'product' => $idProduct]);
+    $entityManager->remove($cart);
+    $entityManager->flush();
+    
+    // Répondre avec un message de confirmation
+    return new JsonResponse('Produit supprimé du panier !');
 }
 
 /**
