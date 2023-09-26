@@ -19,6 +19,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [isOrdering, setIsOrdering] = useState(false);
+  const [redirectTo, setRedirectTo] = useState(null);
   // Vérifier la présence du token JWT lors du chargement de la page
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -108,6 +109,7 @@ function App() {
           <Route path="/single_product/:id" element={<SingleProduct />} />
           <Route path="/cart/:id" element={<Cart redirectToOrder={() => setIsOrdering(true)} />} />
           <Route path="/order/:userId" element={<Order />} />// Ajoutez la route pour le composant Order
+          {redirectTo && <Navigate to={redirectTo} />}
         </Routes>
       </Router>
     </div>
