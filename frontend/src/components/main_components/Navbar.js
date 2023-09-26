@@ -20,7 +20,6 @@ export function Navbar(props) {
     try {
       const decodedToken = jwt_decode(token);
       userId = decodedToken.id;
-      console.log(decodedToken); // Vérifiez les données décryptées ici
     } catch (error) {
       console.error('Erreur lors du décodage du jeton JWT :', error);
     }
@@ -41,9 +40,7 @@ export function Navbar(props) {
   return (
     <nav className="navbar">
       <div className="container">
-        <a href="#" className="link">Accueil</a>
-        <a href="#" className="link">Produits</a>
-        <a href="#" className="link">À propos</a>
+        <a href="/" className="link">Accueil</a>
         <div className="right-links">
           {props.isAuthenticated ? (
             <>
