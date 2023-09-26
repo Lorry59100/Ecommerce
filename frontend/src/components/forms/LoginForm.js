@@ -19,14 +19,12 @@ function LoginForm(props) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const onSubmit = (values) => {
-    console.log('Values', values);
     axios
       .post('https://127.0.0.1:8000/api/login', {
         email: values.email,
         password: values.password
       })
       .then((response) => {
-        console.log('Response data', response.data);
         const { token } = response.data;
         // Stocker le jeton dans le localStorage
         localStorage.setItem('authToken', response.data.token);
@@ -34,9 +32,6 @@ function LoginForm(props) {
         // Décoder le token JWT pour obtenir les informations de l'utilisateur
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.sub; // Obtenez l'ID de l'utilisateur depuis le token
-
-        // Afficher les informations de l'utilisateur dans la console
-        console.log('Informations de l\'utilisateur :', decodedToken);
 
         // Mettre à jour l'état de connexion de l'utilisateur
         setIsUserLoggedIn(true);
