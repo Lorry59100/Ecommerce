@@ -59,6 +59,7 @@ class ProductController extends AbstractController
         $formattedProduct = [
             'id' => $product->getId(),
             'name' => $product->getName(),
+            'img' => $product->getImg(),
             'price' => $product->getPrice(),
             'stock' => $product->getStock(),
             'description' => $product->getDescription(),
