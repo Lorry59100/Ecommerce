@@ -103,7 +103,7 @@ body {
 
 .product-card img {
   max-width: 100%;
-  height: 200px; /* Hauteur fixe pour toutes les images */
+  height: 260px; /* Hauteur fixe pour toutes les images */
   object-fit: cover; /* Ajuste l'image pour remplir la hauteur fixe tout en conservant son ratio */
   margin-bottom: 10px;
 }
@@ -156,6 +156,175 @@ body {
   margin: 0.5em;
 }
 
+/* SINGLE PRODUCT */
+
+/* Styles pour la page d'affichage d'un produit unique */
+.single-product {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.single-product h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.single-product p {
+  margin: 10px 0;
+}
+
+.single-product .description {
+  font-style: italic;
+  color: #666;
+}
+
+.single-product .price {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.single-product .stock {
+  font-weight: bold;
+  color: #28a745; /* Vert pour le stock disponible */
+}
+
+.single-product .out-of-stock {
+  font-weight: bold;
+  color: #dc3545; /* Rouge pour le stock épuisé */
+}
+
+/* Style pour un bouton d'ajout au panier (personnalisez selon vos besoins) */
+.single-product .add-to-cart-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.single-product .add-to-cart-button:hover {
+  background-color: #0056b3;
+}
+
+.single-product img {
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.info-single-product {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* FORMS */
+
+/* Style pour le formulaire */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 2em;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour les étiquettes de champ */
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style pour les champs de formulaire */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Style pour le bouton de soumission */
+button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* TABLEAU panier, historique etc */
+
+/* Style de base pour le tableau */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #343a40; /* Couleur de fond sombre */
+  color: #fff; /* Couleur du texte clair */
+}
+
+/* Style pour les en-têtes de colonne */
+.table th {
+  background-color: #212529; /* Couleur de fond plus foncée pour les en-têtes */
+  color: #fff; /* Couleur du texte clair */
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 2px solid #343a40; /* Bordure inférieure plus sombre */
+}
+
+/* Style pour les lignes impaires (facultatif) */
+.table tbody tr:nth-child(odd) {
+  background-color: #454d55; /* Couleur de fond légèrement plus foncée pour les lignes impaires */
+}
+
+/* Style pour les cellules de données */
+.table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #343a40; /* Bordure inférieure plus claire */
+  text-align: left;
+}
+
+/* Style pour les cellules de données des lignes impaires (facultatif) */
+.table tbody tr:nth-child(odd) td {
+  border-bottom-color: #454d55; /* Bordure inférieure plus foncée pour les lignes impaires */
+}
+
+/* Style pour la marge autour des tableaux */
+.table-container {
+  margin: 20px; /* Vous pouvez ajuster la valeur en pixels selon vos préférences */
+}
+
+/* SINGLE PRODUCT */
+.quantity-selector {
+  margin-bottom: 1em;
+}
+
+.quantity-selector>span {
+  margin: 1em;
+}
+
+.form-order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 
 
