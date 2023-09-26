@@ -3,9 +3,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Navigate } from 'react-router-dom';
+
 
 function OrderForm() {
   const token = localStorage.getItem('authToken');
@@ -14,16 +15,11 @@ function OrderForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [redirectTo, setRedirectTo] = useState(null);
 
-
   const validationSchema = Yup.object().shape({
     selectedDate: Yup.date()
       .required('La date est requise')
       .min(new Date(), 'La date ne peut pas être antérieure à aujourd\'hui'),
   });
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   const submitForm = (values, { setSubmitting }) => {
     // Effectuez la requête HTTP POST vers votre API Symfony avec les valeurs du formulaire
