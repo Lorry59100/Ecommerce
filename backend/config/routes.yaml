@@ -53,3 +53,8 @@ delivered:
     path: /api/delivered/{idUser}
     controller: App\Controller\CartController::delivered
     methods: GET
+
+remove:
+    path: /api/remove/{idUser}/{idProduct}
+    controller: App\Controller\CartController::removeOrder
+    methods: POST
