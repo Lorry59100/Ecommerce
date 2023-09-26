@@ -94,7 +94,7 @@ function ProductList() {
                 </div>
                 <button onClick={() => { addToCart(product); notify(); }}>Ajouter au panier</button>
               </div>
-              <Link to={`/single_product/${product.id}`}><button className='detail-btn'>Détails</button></Link>
+              <Link to={`/single_product/${product.id}`}><button className='detail-btn'>Détail</button></Link>
           </div>
         ))}
       </div>
