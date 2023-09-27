@@ -8,8 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function ProductList() {
   const [products, setProducts] = useState([]);
   const token = localStorage.getItem('authToken');
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
+  const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
+  const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
   const notify = () => toast.success("Produit ajouté au panier");
   useEffect(() => {
     axios.get('https://127.0.0.1:8000/api/products')
