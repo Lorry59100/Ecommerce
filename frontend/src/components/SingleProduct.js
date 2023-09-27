@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { successMsg, errorMsg } from './ToastNotifications';
+import { incrementQuantity, decrementQuantity } from './QuantityOperations';
 
 function SingleProduct() {
   const [product, setProduct] = useState(null);
@@ -65,14 +66,18 @@ function SingleProduct() {
     }
   };
 
-  // Fonction pour incrémenter la quantité
-  const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+  const handleIncrement = () => {
+    if (product && quantity < product.stock) {
+      const updatedProduct = incrementQuantity([product], product.id);
+      setProduct(updatedProduct[0]);
+      setQuantity(quantity + 1);
+    }
   };
-
-  // Fonction pour décrémenter la quantité
-  const decrementQuantity = () => {
-    if (quantity > 1) {
+  
+  const handleDecrement = () => {
+    if (product && quantity > 1) {
+      const updatedProduct = decrementQuantity([product], product.id);
+      setProduct(updatedProduct[0]);
       setQuantity(quantity - 1);
     }
   };
@@ -90,9 +95,9 @@ function SingleProduct() {
       </div>
       <p className="description">Description : {product.description}</p>
       <div className="quantity-selector">
-        <button onClick={decrementQuantity}>-</button>
+        <button onClick={handleDecrement}>-</button>
         <span>{quantity}</span>
-        <button onClick={incrementQuantity}>+</button>
+        <button onClick={handleIncrement}>+</button>
       </div>
       <button className="add-to-cart-button" onClick={() => {addToCart(product)}}>
         Ajouter au panier

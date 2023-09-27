@@ -5,6 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { successMsg, errorMsg } from './ToastNotifications';
+import { incrementQuantity, decrementQuantity } from './QuantityOperations';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -33,26 +34,14 @@ function ProductList() {
     return uniqueCategories;
   };
 
-  const incrementQuantity = (product) => {
-    const updatedProducts = products.map(p => {
-      if (p.id === product.id) {
-        return { ...p, quantity: p.quantity + 1 };
-      }
-      return p;
-    });
+  const handleIncrement = (product) => {
+    const updatedProducts = incrementQuantity(products, product.id);
     setProducts(updatedProducts);
   };
-
-  const decrementQuantity = (product) => {
-    if (product.quantity > 1) {
-      const updatedProducts = products.map(p => {
-        if (p.id === product.id) {
-          return { ...p, quantity: p.quantity - 1 };
-        }
-        return p;
-      });
-      setProducts(updatedProducts);
-    }
+  
+  const handleDecrement = (product) => {
+    const updatedProducts = decrementQuantity(products, product.id);
+    setProducts(updatedProducts);
   };
 
   const addToCart = (product) => {
@@ -108,9 +97,9 @@ function ProductList() {
               </div>
               <div className="card-buttons">
                 <div className="increment-buttons">
-                  <button onClick={() => decrementQuantity(product)}>-</button>
+                  <button onClick={() => handleDecrement(product)}>-</button>
                   <span>{product.quantity}</span>
-                  <button onClick={() => incrementQuantity(product)}>+</button>
+                  <button onClick={() => handleIncrement(product)}>+</button>
                 </div>
                 <button onClick={() => {addToCart(product)}}>Ajouter au panier</button>
               </div>
