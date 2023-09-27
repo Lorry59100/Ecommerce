@@ -144,6 +144,8 @@ body {
 .title_card {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  margin: 1em;
 }
 
 .card-buttons {
