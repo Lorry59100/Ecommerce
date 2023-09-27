@@ -10,8 +10,8 @@ function SingleProduct() {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const token = localStorage.getItem('authToken');
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
+  const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
+  const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
   const [calculatedPrice, setCalculatedPrice] = useState(null);
   const notify = () => toast.success("Produit ajouté au panier");
 
