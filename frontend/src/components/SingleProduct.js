@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { successMsg, errorMsg } from './ToastNotifications';
 
 function SingleProduct() {
   const [product, setProduct] = useState(null);
@@ -13,7 +14,6 @@ function SingleProduct() {
   const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
   const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
   const [calculatedPrice, setCalculatedPrice] = useState(null);
-  const notify = () => toast.success("Produit ajouté au panier");
 
   useEffect(() => {
     // Utilisez directement 'id' extrait de useParams pour obtenir les détails du produit
@@ -49,6 +49,7 @@ function SingleProduct() {
         .then(response => {
           // Traitez la réponse si nécessaire (par exemple, affichez un message de succès)
           console.log('Produit ajouté au panier avec succès', response.data);
+          successMsg("Produit ajouté au panier avec succès !");
 
           // Mettez à jour le stock du produit sur la page
           const updatedProduct = { ...product, stock: product.stock - quantityToAdd };
@@ -56,6 +57,7 @@ function SingleProduct() {
         })
         .catch(error => {
           console.error('Erreur lors de l\'ajout du produit au panier :', error);
+          errorMsg("Erreur lors de l'ajout du produit au panier. Veuillez vous connecter !");
         });
     } else {
       // Gérez le cas où la quantité est négative ou nulle
@@ -92,7 +94,7 @@ function SingleProduct() {
         <span>{quantity}</span>
         <button onClick={incrementQuantity}>+</button>
       </div>
-      <button className="add-to-cart-button" onClick={() => { addToCart(product); notify(); }}>
+      <button className="add-to-cart-button" onClick={() => {addToCart(product)}}>
         Ajouter au panier
       </button>
     </div>

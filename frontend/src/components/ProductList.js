@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { successMsg, errorMsg } from './ToastNotifications';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -67,29 +68,11 @@ function ProductList() {
         return p;
       });
       setProducts(updatedProducts);
-        toast.success("Produit ajouté au panier avec succès !", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          })
+        successMsg("Produit ajouté au panier avec succès !");
       })
       .catch(error => {
         console.error('Erreur lors de l\'ajout du produit au panier :', error);
-        toast.error("Veuillez vous connecter pour ajouter un produit  !", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          })
+        errorMsg("Erreur lors de l'ajout du produit au panier. Veuillez vous connecter !");
       });
   };
 
