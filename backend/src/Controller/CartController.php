@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Repository\CartRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -138,7 +139,7 @@ $idUser, $idProduct, $quantity): JsonResponse | Response {
 /**
  * @Route("/api/order/{idUser}", name="order", methods={"GET", "POST"})
  */
-public function order(UserRepository $userRepository, CartRepository $cartRepository, EntityManagerInterface $entityManager,
+public function order(UserRepository $userRepository, CartRepository $cartRepository, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager,
 $idUser): JsonResponse | Response {
     
     // Récupérer l'utilisateur
@@ -157,7 +158,7 @@ $idUser): JsonResponse | Response {
         $quantity = $cart->getQuantity();
         $price = $product->getPrice();
         $description = $product->getDescription(); 
-        $category = $product->getCategory();
+        $category = $product->getCategory()->getName();
 
         // Stockez les informations dans le tableau associatif
         $productInfo[] = [
@@ -193,6 +194,8 @@ public function confirm(UserRepository $userRepository, CartRepository $cartRepo
     $carts = $cartRepository->findBy(['Owner' => $user, 'status' => null]);
     $cartInfo = [];
     foreach($carts as $cart) {
+        $product = $cart->getProduct();
+        $category = $product->getCategory()->getName();
         $productStatus = $cart->setStatus(1);
         $numberOrder = $cart->setOrdernumber($orderNumber);
         $deliveryDate = $cart->setDeliverydate($parsedDate);
@@ -206,11 +209,10 @@ public function confirm(UserRepository $userRepository, CartRepository $cartRepo
         $cartInfo[] = [
             'status' => $productStatus,
             'numberOrder' => $numberOrder,
-            'deliveryDate' => $deliveryDate
+            'deliveryDate' => $deliveryDate,
+            'category' => $category
         ];
     }
-    
-
     // Répondre avec un message de confirmation
     return new JsonResponse($cartInfo);
 }
@@ -256,7 +258,7 @@ public function isShipping(UserRepository $userRepository, CartRepository $cartR
         $quantity = $cart->getQuantity();
         $price = $product->getPrice();
         $description = $product->getDescription(); 
-        $category = $product->getCategory();
+        $category = $product->getCategory()->getName();
         $orderNumber = $cart->getOrdernumber();
         $id = $cart->getId();
         $deliveryDate = $cart->getDeliverydate();
@@ -298,7 +300,7 @@ public function delivered(UserRepository $userRepository, CartRepository $cartRe
         $quantity = $cart->getQuantity();
         $price = $product->getPrice();
         $description = $product->getDescription(); 
-        $category = $product->getCategory();
+        $category = $product->getCategory()->getName();
         $orderNumber = $cart->getOrdernumber();
         $id = $cart->getId();
         $deliveryDate = $cart->getDeliverydate();
