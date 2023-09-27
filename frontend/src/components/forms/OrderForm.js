@@ -10,8 +10,8 @@ import { Navigate } from 'react-router-dom';
 
 function OrderForm() {
   const token = localStorage.getItem('authToken');
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
+  const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
+  const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
   const [selectedDate, setSelectedDate] = useState(null);
   const [redirectTo, setRedirectTo] = useState(null);
 
