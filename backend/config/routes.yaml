@@ -58,3 +58,8 @@ remove:
     path: /api/remove/{idUser}/{idProduct}
     controller: App\Controller\CartController::removeOrder
     methods: POST
+
+order_payment:
+    path: /api/orderPayment/{idUser}
+    controller: App\Controller\PaymentController::payment
+    methods: POST

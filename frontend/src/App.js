@@ -8,6 +8,8 @@ import { RegistrationForm } from './components/forms/RegistrationForm';
 import SingleProduct from './components/SingleProduct';
 import { Cart } from './components/Cart';
 import { Order } from './components/Order';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
 function App() {
   const [isProductListVisible, setIsProductListVisible] = useState(true);

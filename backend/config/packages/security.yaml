@@ -40,7 +40,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/(login|register|products|single_product), roles: PUBLIC_ACCESS }
-        - { path: ^/api/(show_cart)/(add_cart)/(order)/(confirm)/(shipping)/(delivered)/(remove), roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/(show_cart)/(add_cart)/(order)/(confirm)/(shipping)/(delivered)/(remove)/(order_payment), roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

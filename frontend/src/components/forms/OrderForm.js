@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { Navigate } from 'react-router-dom';
 
 
-function OrderForm() {
+function OrderForm({ setDeliveryDate }) {
   const token = localStorage.getItem('authToken');
   const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
   const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
@@ -29,6 +29,7 @@ function OrderForm() {
         // Traitement de la réponse du serveur en cas de succès
         console.log('La requête a été soumise avec succès.');
         setSubmitting(false); // Marquez le formulaire comme soumis avec succès
+        setDeliveryDate(selectedDate);
   
         // Définissez la valeur de redirectTo pour déclencher la redirection
         setRedirectTo('/'); // Remplacez '/nouvelle-page' par l'URL de la page de destination
@@ -60,9 +61,6 @@ function OrderForm() {
           />
           <ErrorMessage name="selectedDate" component="div" className="error" />
 
-          <button type="submit" disabled={isSubmitting}>
-            Valider la livraison
-          </button>
           {redirectTo && <Navigate to={redirectTo} />}
         </Form>
       )}
