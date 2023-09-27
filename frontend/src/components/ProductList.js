@@ -11,7 +11,6 @@ function ProductList() {
   const token = localStorage.getItem('authToken');
   const decodedToken = token ? jwt_decode(token) : null;
   const userId = decodedToken ? decodedToken.id : null;
-  const notify = () => toast.success("Produit ajouté au panier");
 
   useEffect(() => {
     axios.get('https://127.0.0.1:8000/api/products')
@@ -61,9 +60,29 @@ function ProductList() {
     axios.post(`https://127.0.0.1:8000/api/addcart/${userId}/${product.id}/${quantity}`)
       .then(response => {
         console.log('Produit ajouté au panier avec succès', response.data);
+        toast.success("Produit ajouté au panier avec succès !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          })
       })
       .catch(error => {
         console.error('Erreur lors de l\'ajout du produit au panier :', error);
+        toast.error("Veuillez vous connecter pour ajouter un produit  !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          })
       });
   };
 
@@ -103,7 +122,7 @@ function ProductList() {
                   <span>{product.quantity}</span>
                   <button onClick={() => incrementQuantity(product)}>+</button>
                 </div>
-                <button onClick={() => { addToCart(product); notify(); }}>Ajouter au panier</button>
+                <button onClick={() => {addToCart(product)}}>Ajouter au panier</button>
               </div>
               <Link to={`/single_product/${product.id}`}><button className='detail-btn'>Détail</button></Link>
             </div>
