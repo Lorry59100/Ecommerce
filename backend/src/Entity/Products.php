@@ -18,9 +18,6 @@ class Products
     #[ORM\Column(length: 255)]
     private ?string $Name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Category = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $Stock = null;
 
@@ -35,6 +32,9 @@ class Products
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $img = null;
+
+    #[ORM\ManyToOne(inversedBy: 'product')]
+    private ?Category $category = null;
 
     public function __construct()
     {
@@ -54,18 +54,6 @@ class Products
     public function setName(string $Name): static
     {
         $this->Name = $Name;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->Category;
-    }
-
-    public function setCategory(string $Category): static
-    {
-        $this->Category = $Category;
 
         return $this;
     }
@@ -144,6 +132,18 @@ class Products
     public function setImg(?string $img): static
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
