@@ -6,8 +6,8 @@ import OrderForm from './forms/OrderForm';
 export function Order(props) {
   const [orderData, setOrderData] = useState([]);
   const token = localStorage.getItem('authToken');
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id; // Déclarez userId dans la portée supérieure
+  const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
+  const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
 
   useEffect(() => {
     // Effectuer la requête HTTP pour récupérer les données de commande
