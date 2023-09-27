@@ -5,8 +5,8 @@ import { Navigate } from 'react-router-dom';
 
 export function Cart(props) {
   const token = localStorage.getItem('authToken');
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
+  const decodedToken = token ? jwt_decode(token) : null; // Vérifiez si le token existe
+  const userId = decodedToken ? decodedToken.id : null; // Utilisez le userId uniquement si le token existe
   const cartApiUrl = `https://127.0.0.1:8000/api/cart/${userId}`;
   const orderHistoryApiUrl = `https://127.0.0.1:8000/api/shipping/${userId}`;
   const deliveredApiUrl = `https://127.0.0.1:8000/api/delivered/${userId}`;
@@ -95,6 +95,8 @@ const truncateDescription = (description, maxLength) => {
   return description;
 };
 
+
+
   return (
     <div>
       <h1>Mon panier</h1>
@@ -132,10 +134,7 @@ const truncateDescription = (description, maxLength) => {
       
       {!isCartEmpty && <button onClick={handleOrderClick}>Valider le panier</button>}
       {isOrdering && <Navigate to={`/order/${userId}`} />}
-   
-      
-      {/* Le reste de votre code pour le panier... */}
-      
+     
       {orderHistory.length > 0 && (
         <div>
           <h1>En cours de livraison</h1>
@@ -146,6 +145,7 @@ const truncateDescription = (description, maxLength) => {
                   <th>Numéro de commande</th>
                   <th>Date de livraison</th>
                   <th>Nom</th>
+                  <th>Catégorie</th>
                   <th>Quantité</th>
                   <th>Prix</th>
                 </tr>
@@ -156,6 +156,7 @@ const truncateDescription = (description, maxLength) => {
                     <td>{order.orderNumber}</td>
                     <td>{new Date(order.deliveryDate.date).toLocaleDateString()}</td>
                     <td>{order.name}</td>
+                    <td>{order.category}</td>
                     <td>{order.quantity}</td>
                     <td>{order.price * order.quantity} €</td>
                   </tr>
@@ -165,7 +166,7 @@ const truncateDescription = (description, maxLength) => {
           </div>
         </div>
       )}
-  
+
       {deliveredProducts.length > 0 && (
         <div>
           <h1>Historique des commandes</h1>
