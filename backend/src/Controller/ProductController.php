@@ -31,11 +31,11 @@ class ProductController extends AbstractController
             $formattedProducts[] = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
+                'category' => $product->getCategory()->getName(),
                 'price' => $product->getPrice(),
                 'stock' => $product->getStock(),
                 'img' => $product->getImg(),
                 'description' => $product->getDescription(),
-                // ... autres propriétés
             ];
         }
 
@@ -59,11 +59,11 @@ class ProductController extends AbstractController
         $formattedProduct = [
             'id' => $product->getId(),
             'name' => $product->getName(),
+            'category' => $product->getCategory()->getName(),
             'img' => $product->getImg(),
             'price' => $product->getPrice(),
             'stock' => $product->getStock(),
             'description' => $product->getDescription(),
-            // ... autres propriétés
         ];
 
         return new JsonResponse($formattedProduct);
