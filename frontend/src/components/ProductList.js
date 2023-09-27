@@ -60,6 +60,13 @@ function ProductList() {
     axios.post(`https://127.0.0.1:8000/api/addcart/${userId}/${product.id}/${quantity}`)
       .then(response => {
         console.log('Produit ajouté au panier avec succès', response.data);
+      const updatedProducts = products.map(p => {
+        if (p.id === product.id) {
+          return { ...p, stock: p.stock - quantity };
+        }
+        return p;
+      });
+      setProducts(updatedProducts);
         toast.success("Produit ajouté au panier avec succès !", {
           position: "top-right",
           autoClose: 5000,
