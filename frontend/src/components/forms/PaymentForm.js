@@ -13,23 +13,32 @@ const userId = decodedToken ? decodedToken.id : null;
 
 function PaymentForm({ totalPrice }) { // Recevoir le montant total en tant que prop
   const [clientSecret, setClientSecret] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
-    // Faites une requête à votre serveur Symfony pour obtenir le clientSecret
-    axios.post(`https://127.0.0.1:8000/api/orderPayment/${userId}`, { amountToPay: totalPrice })
+    const dateParam = selectedDate ? selectedDate.toISOString() : null;
+  
+    axios
+      .post(`https://127.0.0.1:8000/api/orderPayment/${userId}/${dateParam}`, { amountToPay: totalPrice, selectedDate: dateParam })
       .then(response => {
         setClientSecret(response.data.clientSecret);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération du clientSecret :', error);
       });
-  }, [userId, totalPrice]);
+  }, [userId, totalPrice, selectedDate]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date); // Mettez à jour la date sélectionnée lorsque l'utilisateur la change
+    console.log('Date sélectionnée:', selectedDate);
+  };
+
 
   return (
     <div>
       {clientSecret ? (
         <Elements stripe={stripePromise}>
-          <CheckoutForm clientSecret={clientSecret} amountToPay={totalPrice}  />
+          <CheckoutForm clientSecret={clientSecret} amountToPay={totalPrice} selectedDate={selectedDate} onChange={handleDateChange} />
         </Elements>
       ) : (
         <div>Chargement en cours...</div>

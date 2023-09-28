@@ -60,6 +60,6 @@ remove:
     methods: POST
 
 order_payment:
-    path: /api/orderPayment/{idUser}
+    path: /api/orderPayment/{idUser}/{date}
     controller: App\Controller\PaymentController::payment
     methods: POST

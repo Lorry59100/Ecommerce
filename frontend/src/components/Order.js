@@ -60,7 +60,7 @@ export function Order(props) {
           </tr>
         </tbody>
       </table>
-      <OrderForm />
+      {/* <OrderForm /> */}
       <PaymentForm totalPrice={calculateTotalPrice()} />
     </div>
   );
