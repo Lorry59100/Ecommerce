@@ -93,7 +93,7 @@ function ProductList() {
               <img src={product.img} alt={product.name} />
               <div className="stock-price">
                 <p> Stock : {product.stock} </p>
-                <p>Prix : {product.price * product.quantity} €</p>
+                <p>Prix : {(product.price * product.quantity / 100).toFixed(2)} €</p>
               </div>
               <div className="card-buttons">
                 <div className="increment-buttons">
