@@ -172,51 +172,6 @@ $idUser): JsonResponse | Response {
     return new JsonResponse($productInfo);
 }
 
-
-/**
- * @Route("/api/confirm/{idUser}/{date}", name="confirm", methods={"GET", "POST"})
- */
-public function confirm(UserRepository $userRepository, CartRepository $cartRepository, EntityManagerInterface $entityManager, $idUser, $date): JsonResponse
-{
-    // Récupérer l'utilisateur
-    $user = $userRepository->find($idUser);
-    if (!$user) {
-        throw $this->createNotFoundException('Utilisateur inconnu');
-    }
-
-    // Convertissez la date au format souhaité
-    $parsedDate = new \DateTime($date);
-
-    // Générer un identifiant unique
-    $orderNumber = uniqid();
-
-    // Récupérer les produits
-    $carts = $cartRepository->findBy(['Owner' => $user, 'status' => null]);
-    $cartInfo = [];
-    foreach($carts as $cart) {
-        $product = $cart->getProduct();
-        $category = $product->getCategory()->getName();
-        $productStatus = $cart->setStatus(1);
-        $numberOrder = $cart->setOrdernumber($orderNumber);
-        $deliveryDate = $cart->setDeliverydate($parsedDate);
-        $entityManager->persist($cart);
-        $entityManager->flush();
-        $productStatus = $cart->getStatus();
-        $numberOrder = $cart->getOrdernumber();
-        $deliveryDate = $cart->getDeliverydate();
-
-        // Stockez les informations dans le tableau associatif
-        $cartInfo[] = [
-            'status' => $productStatus,
-            'numberOrder' => $numberOrder,
-            'deliveryDate' => $deliveryDate,
-            'category' => $category
-        ];
-    }
-    // Répondre avec un message de confirmation
-    return new JsonResponse($cartInfo);
-}
-
 /**
  * @Route("/api/remove/{idUser}/{idProduct}", name="remove", methods={"POST"})
  */

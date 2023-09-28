@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import OrderForm from './forms/OrderForm';
 import PaymentForm from './forms/PaymentForm';
 
 export function Order(props) {
