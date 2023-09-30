@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import DatePicker from 'react-datepicker'; // Importez le composant DatePicker
-import 'react-datepicker/dist/react-datepicker.css'; // Importez les styles par défaut de DatePicker
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
-const CheckoutForm = ({ clientSecret, amountToPay, selectedDate, onChange }) => {
+const CheckoutForm = ({ userId, totalPrice, onClientSecretReceived }) => {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const stripe = useStripe();
   const elements = useElements();
 
+  const getClientSecret = async () => {
+    const dateParam = selectedDate ? selectedDate.toISOString() : null;
+    try {
+      const response = await axios.post(`https://127.0.0.1:8000/api/orderPayment/${userId}/${dateParam}`, {
+        amountToPay: totalPrice,
+        selectedDate: dateParam,
+      });
+      return response.data.clientSecret;
+    } catch (error) {
+      console.error('Erreur lors de la récupération du clientSecret :', error);
+      return null;
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !isFormValid) {
+      console.log('Le formulaire n\'est pas valide.');
       return;
     }
 
@@ -23,48 +41,48 @@ const CheckoutForm = ({ clientSecret, amountToPay, selectedDate, onChange }) => 
       },
     };
 
-    const result = await stripe.confirmCardPayment(clientSecret, paymentData);
+    const clientSecret = await getClientSecret(); // Obtenir le clientSecret ici
 
+    if (clientSecret) {
+      try {
+        const result = await stripe.confirmCardPayment(clientSecret, paymentData);
 
-    if (result.error) {
-      console.error(result.error.message);
+        if (result.error) {
+          console.error(result.error.message);
+        } else {
+          console.log('Paiement confirmé avec succès !');
+          // Redirigez l'utilisateur vers votre URL de réussite ou effectuez d'autres actions nécessaires
+        }
+      } catch (error) {
+        console.error('Erreur lors du paiement :', error);
+      }
     } else {
-      // Le paiement a été confirmé avec succès
-      // Redirigez l'utilisateur vers votre URL de réussite ou effectuez d'autres actions nécessaires
+      console.error('Impossible d\'obtenir le clientSecret.');
     }
+  };
+
+  const handleFormValidation = (isValid) => {
+    setIsFormValid(isValid);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Card details
-        <CardElement
-          options={{
-            style: {
-              fontSize: '16px',
-              color: '#424770',
-              '::placeholder': {
-                color: '#aab7c4',
-              },
-            },
-            invalid: {
-              color: '#9e2146',
-            },
-          }}
-        />
+        Détails de la carte
+        <CardElement className="CardElement" onChange={(e) => handleFormValidation(e.complete)} />
       </label>
 
       <div>
         <label>Date de livraison</label>
-          <DatePicker
+        <DatePicker
           selected={selectedDate}
-          onChange={(date) => onChange(date)} // Utilisez la fonction de rappel onChange pour mettre à jour la date sélectionnée
+          onChange={(date) => setSelectedDate(date)}
           dateFormat="dd/MM/yyyy"
-          />
+        />
       </div>
 
-      <p>Montant à payer : {amountToPay} EUR</p>
-      <button type="submit" disabled={!stripe}>
+      <p>Montant à payer : {(totalPrice / 100).toFixed(2)} EUR</p>
+      <button type="submit" disabled={!stripe || !isFormValid}>
         Payer
       </button>
     </form>
