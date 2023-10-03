@@ -62,7 +62,6 @@ const CheckoutForm = ({ userId, totalPrice }) => {
     }
 
     const cardnumberElement = elements.getElement(CardNumberElement);
-    console.log(cardnumberElement);
     const cardexpiryElement = elements.getElement(CardExpiryElement);
     const cardcvcElement = elements.getElement(CardCvcElement);
 
