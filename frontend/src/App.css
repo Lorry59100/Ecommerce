@@ -336,5 +336,55 @@ button[type="submit"]:hover {
   align-items: center;
 }
 
+/* CARD ELEMENT */
+.CardNumberElement, .CardExpiryElement, .CardCvcElement {
+  font-size: 16px;
+  color: #424770;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  /* margin-top: 1.5em; */
+  position: relative;
+}
 
+#card-errors-number, #card-errors-expiry, #card-errors-cvc {
+  position: absolute;
+}
 
+.card-element-container {
+  margin-bottom: 2.5em;
+}
+
+.card-info {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.2em;
+}
+
+.CardNumberElement::placeholder, .CardExpiryElement::placeholder, .CardCvcElement::placeholder {
+  color: #aab7c4;
+}
+
+.CardNumberElement--invalid, .CardExpiryElement--invalid, .CardCvcElement--invalid {
+  color: #9e2146;
+}
+
+.table-command-details {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin: 20px; /* Ajustez la marge selon votre préférence */
+}
+
+.product-table {
+  max-width: 40%; /* Limitez la largeur du tableau à 40% de l'espace disponible */
+  margin-right: 20px; /* Marge entre le tableau et le formulaire */
+}
+
+.payment-container {
+  flex-grow: 0.5; /* Le formulaire prendra 2 parts de l'espace disponible */
+}
+
+.total-price {
+  font-size: 0.9em;
+}

@@ -29,8 +29,9 @@ export function Order(props) {
   
 
   return (
-    <div className="table-container">
+    <div>
       <h1>Détails de la commande</h1>
+    <div className="table-command-details">
       <table className="table product-table">
         <thead>
           <tr>
@@ -48,19 +49,21 @@ export function Order(props) {
               <td>{product.category}</td>
               <td>{product.description}</td>
               <td>{product.quantity}</td>
-              <td>{product.price * product.quantity} €</td>
+              <td>{((product.price * product.quantity) / 100).toFixed(2) } €</td>
             </tr>
           ))}
           <tr>
             <td colSpan="4"></td>
             <td className="total-price">
-              <strong>Prix Total:</strong> {calculateTotalPrice()} €
+              <strong>Prix Total:</strong> {(calculateTotalPrice() / 100).toFixed(2)} €
             </td>
           </tr>
         </tbody>
       </table>
-      {/* <OrderForm /> */}
-      <PaymentForm totalPrice={calculateTotalPrice()} />
+      <div className="payment-container">
+      <PaymentForm className="payment-form" totalPrice={calculateTotalPrice()} />
+      </div>
+    </div>
     </div>
   );
 }
